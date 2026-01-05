@@ -409,33 +409,41 @@ export default function App() {
     gridRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Inject FontAwesome
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    return () => document.head.removeChild(link);
-  }, []);
+// Inject FontAwesome
+useEffect(() => {
+  const link = document.createElement('link');
+  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+  link.rel = 'stylesheet';
+  document.head.appendChild(link);
+
+  // RETURN A CLEANUP FUNCTION, NOT THE LINK ITSELF
+  return () => {
+    document.head.removeChild(link);
+  };
+}, []);
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans selection:bg-[#333] selection:text-white">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Space+Mono:wght@400;700&display=swap');
-        
-        .stroke-text {
-          -webkit-text-stroke: 1px white;
-          color: transparent;
-        }
-        
-        html {
-          scroll-behavior: smooth;
-        }
+     <style
+  dangerouslySetInnerHTML={{
+    __html: `
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Space+Mono:wght@400;700&display=swap');
+      
+      .stroke-text {
+        -webkit-text-stroke: 1px white;
+        color: transparent;
+      }
+      
+      html {
+        scroll-behavior: smooth;
+      }
 
-        body {
-          background-color: #050505;
-        }
-      `}</style>
+      body {
+        background-color: #050505;
+      }
+    `
+  }}
+/>
 
       {/* Intro Glitch */}
       {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
