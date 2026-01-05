@@ -231,7 +231,7 @@ const Navigation = () => {
 const GridItem = ({ item }) => {
   const [imageIndex, setImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [rotations, setRotations] = useState([]);
   const videoRef = useRef(null);
 
