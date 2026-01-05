@@ -292,8 +292,7 @@ const GridItem = ({ item }: { item: any }) => {
 
   return (
     <div 
-      className={`relative group h-[500px] md:h-[600px] bg-[#111] overflow-hidden border border-white/10 md:col-span-1`}
-      onMouseEnter={() => setIsHovering(true)}
+    className={`relative group aspect-[4/5] md:aspect-[3/4] w-full bg-[#111] overflow-hidden border border-white/10 md:col-span-1`}      onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-0 pointer-events-none"></div>
