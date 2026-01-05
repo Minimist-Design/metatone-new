@@ -233,7 +233,7 @@ const GridItem = ({ item }) => {
   const [isHovering, setIsHovering] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [rotations, setRotations] = useState<number[]>([]);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (item.images) {
