@@ -160,8 +160,7 @@ const ITEMS = [
 
 // --- Components ---
 
-const LoadingScreen = ({ onComplete }) => {
-  useEffect(() => {
+const LoadingScreen = ({ onComplete }: { onComplete: any }) => {  useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
     }, 3000);
