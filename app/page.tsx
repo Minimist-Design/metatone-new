@@ -1,4 +1,5 @@
-'use client';import React, { useState, useEffect, useRef } from 'react';
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, ChevronDown } from 'lucide-react';
 
 /**
@@ -160,7 +161,8 @@ const ITEMS = [
 
 // --- Components ---
 
-const LoadingScreen = ({ onComplete }: { onComplete: any }) => {  useEffect(() => {
+const LoadingScreen = ({ onComplete }: { onComplete: any }) => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
     }, 3000);
@@ -228,11 +230,17 @@ const Navigation = () => {
   );
 };
 
-const GridItem = ({ item }) => {
+const GridItem = ({ item }: { item: any }) => {
   const [imageIndex, setImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  
+  // FIX 1: Explicitly type the interval ref so it can hold a Timer ID
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  
+  // FIX 2: Explicitly type rotations as an array of numbers
   const [rotations, setRotations] = useState<number[]>([]);
+  
+  // FIX 3: Explicitly type videoRef as a Video Element
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -253,7 +261,7 @@ const GridItem = ({ item }) => {
           videoRef.current.play().catch(e => console.log("Video play failed", e));
         }
       } else {
-        // FIX: Check if current exists before clearing
+        // FIX 4: Check if current exists before clearing
         if (intervalRef.current) clearInterval(intervalRef.current);
         setImageIndex(0);
         
@@ -265,7 +273,7 @@ const GridItem = ({ item }) => {
     } 
     // ALL OTHER TILES (Simple Swap Logic)
     else {
-      // FIX: Check if current exists before clearing
+      // FIX 4: Check if current exists before clearing
       if (intervalRef.current) clearInterval(intervalRef.current);
       
       if (isHovering && item.images && item.images.length > 1) {
@@ -276,12 +284,10 @@ const GridItem = ({ item }) => {
         setImageIndex(0);
       }
     }
-    // FIX: Check if current exists in cleanup
+    // FIX 4: Check if current exists in cleanup
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHovering, item.images, item.video]);
-    return () => clearInterval(intervalRef.current);
   }, [isHovering, item.images, item.video]);
 
   return (
@@ -309,7 +315,7 @@ const GridItem = ({ item }) => {
 
       {/* Image Stack (Hidden if video is playing on hover) */}
       <div className={`absolute inset-0 w-full h-full p-4 md:p-8 flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-[1.02] ${item.video && isHovering ? 'opacity-0' : 'opacity-100'}`}>
-         {item.images.map((img, idx) => (
+         {item.images.map((img: string, idx: number) => (
            <div 
             key={idx}
             className={`absolute inset-0 md:inset-4 bg-cover bg-center transition-all duration-300 ease-out shadow-2xl ${
@@ -319,7 +325,7 @@ const GridItem = ({ item }) => {
               backgroundImage: `url(${img})`,
               filter: 'none', 
               transform: isHovering && idx === imageIndex 
-                ? `rotate(${rotations[idx]}deg) scale(1.05)` 
+                ? `rotate(${rotations[idx] || 0}deg) scale(1.05)` 
                 : `rotate(0deg) scale(1)`
             }}
            >
@@ -374,7 +380,7 @@ const GridItem = ({ item }) => {
 
         {/* Social Icons */}
         <div className="flex gap-4 pointer-events-auto">
-          {item.socials.map((social, index) => (
+          {item.socials.map((social: any, index: number) => (
             <a 
               key={index} 
               href={social.link} 
@@ -395,8 +401,8 @@ const GridItem = ({ item }) => {
 export default function App() {
   const [loading, setLoading] = useState(true);
   
-  // Ref for the grid section
-  const gridRef = useRef(null);
+  // Ref for the grid section (Generic Element to avoid null errors)
+  const gridRef = useRef<HTMLDivElement>(null);
   
   // Scroll handler
   const scrollToGrid = () => {
@@ -475,7 +481,7 @@ export default function App() {
           </p>
           <div className="h-px w-10 bg-white/20"></div>
           <p className="font-mono text-xs uppercase text-neutral-600 tracking-wider">
-             © 2026 Metatone Management, LLC. All Rights Reserved &nbsp;●&nbsp; Website crafted by: Minimist
+             © 2026 Metatone Management, LLC. All Rights Reserved  ●  Website crafted by: Minimist
           </p>
         </div>
       </footer>
