@@ -253,7 +253,8 @@ const GridItem = ({ item }) => {
           videoRef.current.play().catch(e => console.log("Video play failed", e));
         }
       } else {
-        clearInterval(intervalRef.current);
+        // FIX: Check if current exists before clearing
+        if (intervalRef.current) clearInterval(intervalRef.current);
         setImageIndex(0);
         
         if (videoRef.current) {
@@ -264,8 +265,8 @@ const GridItem = ({ item }) => {
     } 
     // ALL OTHER TILES (Simple Swap Logic)
     else {
-      // Clean up intervals if any (just in case)
-      clearInterval(intervalRef.current);
+      // FIX: Check if current exists before clearing
+      if (intervalRef.current) clearInterval(intervalRef.current);
       
       if (isHovering && item.images && item.images.length > 1) {
         // Switch to Alternate Image
@@ -275,6 +276,11 @@ const GridItem = ({ item }) => {
         setImageIndex(0);
       }
     }
+    // FIX: Check if current exists in cleanup
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isHovering, item.images, item.video]);
     return () => clearInterval(intervalRef.current);
   }, [isHovering, item.images, item.video]);
 
